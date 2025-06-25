@@ -1,22 +1,25 @@
 #include "libft.h"
 #include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 int main(void)
 {
-	
-	int nums1[] = {21, 33, 55, 321};
-	int nums2[] = {21, 33, 44, 321};
+	int fd = open("dosya.txt", O_CREAT |O_RDWR, 0644);
 
-	char *cr1 = ft_strdup("SELAM NASILSIN");
-	char *cr2 = ft_strdup("SELAM MERHABA");
-	int x = ft_memcmp(nums1, nums2, sizeof(int) * 4);
+	ft_putendl_fd( "selamlar merhabalar",fd);	
+	ft_putchar_fd('\n',fd);
+	ft_putendl_fd("YENİ SARITA GEÇİLDİ",fd);	
 
-//	printf("%d", x);
+	char vuffer[500];
+	read(fd, vuffer, 499);
+	vuffer[499] = '\0';
 
-	char *ss = ft_memchr(cr1, 'A', ft_strlen(cr1) + ft_strlen(cr2));
-
-	printf("%s",(char*) ss);
+	printf("%s", vuffer);
 
 
+	close(fd);
+
+    return 0;
 }
-

@@ -4,20 +4,26 @@
 
 char	*ft_strdup(const char *s)
 {
-	size_t	n;
-	char	*res;
-	size_t	i;
-
-	n = ft_strlen(s);
-	res = malloc(n + 1);
-	if (!res)
+	char	*s_start;
+	char	*dup;
+	char	*dup_start;
+	int		len;
+	int		i;
+	len = 0;
+	s_start = s;
+	while (*s_start != '\0')
+		len++;
+	s_start = s;
+	dup = malloc((len + 1) * sizeof(char));
+	if (dup == NULL)
 		return (NULL);
 	i = 0;
-	while (s[i])
+	dup_start = dup;
+	while (i < len)
 	{
-		res[i] = s[i];
+		*dup_start++ = *s_start++;
 		i++;
-	}
-	res[i] = '\0';
-	return (res);
+	}	
+	*dup_start = '\0';
+	return (dup);
 }

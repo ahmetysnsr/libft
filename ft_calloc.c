@@ -13,22 +13,16 @@
 #include "libft.h"
 #include <stdlib.h>
 
-void	*ft_calloc(size_t count, size_t size)
+void	*ft_calloc(size_t nmemb, size_t size)
 {
-	void	*ptr;
-	size_t	total_size;
+	unsigned char	*ptr;
 
-	if (count != 0 && size != 0)
-	{
-		total_size = count * size;
-		if (total_size / size != count)
-			return (NULL);
-	}
-	else
-		total_size = 0;
-	ptr = malloc(total_size);
-	if (!ptr)
-		return (NULL);
-	ft_memset(ptr, 0, total_size);
-	return (ptr);
+	if(nmemb == 0 || size == 0)
+		return NULL;
+	ptr = malloc(nmemb * size);
+	if (ptr == NULL)
+		return NULL;
+	ft_memset(ptr, 0, nmemb * size);
+
+	return ((void*) ptr);
 }

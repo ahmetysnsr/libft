@@ -1,83 +1,78 @@
 
 #include <stdlib.h>
+#include "libft.h"
 
-static int	ft_count(const char *s, char c)
+static char	*word_dup(const char *start, int len)
 {
-	size_t	count;
-	size_t	i;
+	char	*word;
+	int		i;
 
-	count = 0;
+	word = malloc(sizeof(char) * (len + 1));
+	if (word == NULL)
+		return (NULL);
 	i = 0;
-	while (s[i])
+	while (i < len)
 	{
-		while (s[i] && s[i] == c)
-			i++;
-		if (s[i] && s[i] != c)
-		{
-			count++;
-			while (s[i] && s[i] != c)
-				i++;
-		}
+		word[i] = start[i];
+		i++;
 	}
-	return (count);
+	word[i] = '\0';
+	return (word);
 }
 
-static int	word_len(const char *s, char c)
+
+static int	word_counter(char const *s, char c)
 {
-	size_t	len;
+	int	word_count;
+	int	flag;
 
-	len = 0;
-	while (s[len] && s[len] != c)
-		len++;
-	return (len);
+	flag = 0;
+	word_count = 0;
+	while (*s != '\0')
+	{
+		if (*s != c && flag == 0)
+		{
+			flag = 1;
+			word_count++;
+		}
+		else if (*s == c && flag == 1)
+			flag = 0;
+
+		s++;
+	}
+	return (word_count);
 }
 
-static void	free_all(char **arr)
-{
-	size_t	i;
-
-	i = 0;
-	while (arr[i])
-		free(arr[i++]);
-	free(arr);
-}
-
-static int	fill_word(char **res, const char **s, char c, size_t i)
-{
-	size_t	len;
-	size_t	j;
-
-	len = word_len(*s, c);
-	res[i] = malloc(len + 1);
-	if (!res[i])
-		return (0);
-	j = 0;
-	while (j < len)
-		res[i][j++] = *(*s)++;
-	res[i][j] = '\0';
-	return (1);
-}
 
 char	**ft_split(char const *s, char c)
 {
-	char	**res;
-	size_t	i;
-	size_t	word;
+	char	**array;
+	int		word_count;
+	int		index;
+    int		start;
+    int		end;
 
-	if (!s)
+	index = 0;
+	word_count = word_counter(s, c);
+	array = malloc(sizeof(char*) * (word_count + 1));
+	if(array == NULL)
 		return (NULL);
-	word = ft_count(s, c);
-	res = malloc(sizeof(char *) * (word + 1));
-	if (!res)
-		return (NULL);
-	i = 0;
-	while (*s && i < word)
+	start = -1;
+	end = 0;
+
+	while (s[end])
 	{
-		while (*s == c)
-			s++;
-		if (*s && !fill_word(res, &s, c, i++))
-			return (free_all(res), NULL);
+		if (s[end] != c && start < 0)
+			start = end;
+        if ((s[end] == c || s[end + 1] == '\0') && start >= 0)
+        {
+            int len = end - start + (s[end] == c ? 0 : 1);
+            array[index] = word_dup(s + start, len);
+			index++;
+            start = -1;
+        }
+		end++;
 	}
-	res[i] = NULL;
-	return (res);
+	array[index] = NULL;
+	return (array);
 }

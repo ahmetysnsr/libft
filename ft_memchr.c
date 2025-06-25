@@ -4,14 +4,17 @@
 void	*ft_memchr(const void *s, int c, size_t n)
 {
 	size_t				i;
-	const unsigned char	*buf;
+	const unsigned char	*arr;
 
-	buf = (const unsigned char *)s;
+	if (n == 0 || s == NULL)
+		return (NULL);
+	arr = s;
 	i = 0;
 	while (i < n)
 	{
-		if (buf[i] == (unsigned char)c)
-			return ((void *)(&buf[i]));
+		if((unsigned char)c == *arr)
+			return ((void*)(arr));
+		arr++;
 		i++;
 	}
 	return (NULL);

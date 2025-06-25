@@ -15,7 +15,9 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	str = malloc(n1 + n2 + 1);
 	if (!str)
 		return (NULL);
-	ft_strlcpy(str, s1, n1 + 1);
-	ft_strlcat(str, s2, n1 + n2 + 1);
+	ft_memcpy(str, s1, n1);
+	ft_memcpy((str + n1), s2, n2);
+	*(str + n1 + n2) = '\0';
+
 	return (str);
 }

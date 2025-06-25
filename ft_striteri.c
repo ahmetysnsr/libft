@@ -8,9 +8,10 @@ void	ft_striteri(char *s, void (*f)(unsigned int, char *))
 	if (!s || !f)
 		return ;
 	i = 0;
-	while (s[i])
+	while (*s)
 	{
-		f(i, &s[i]);
+		f(i, s);
+		s++;
 		i++;
 	}
 }
