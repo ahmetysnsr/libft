@@ -6,10 +6,11 @@
 /*   By: asari <asari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 17:27:23 by asari             #+#    #+#             */
-/*   Updated: 2025/06/26 17:53:18 by asari            ###   ########.fr       */
+/*   Updated: 2025/06/26 18:08:34 by asari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include <stdlib.h>
 
 static char	**free_all(char **array)
@@ -26,6 +27,7 @@ static char	**free_all(char **array)
 	return (NULL);
 }
 
+/*
 static char	*word_dup(const char *start, int len)
 {
 	char	*word;
@@ -42,6 +44,14 @@ static char	*word_dup(const char *start, int len)
 	}
 	word[i] = '\0';
 	return (word);
+}
+*/
+
+void	initilazier(int *a, int *b, int *c)
+{
+	*a = -1;
+	*b = 0;
+	*c = 0;
 }
 
 static int	word_counter(const char *s, char c)
@@ -72,10 +82,8 @@ static char	**fill_array(const char *s, char **array, char c)
 	int	index;
 	int	len;
 
-	start = -1;
-	end = 0;
-	index = 0;
-	while (s[end])
+	initilazier(&start, &end, &index);
+	while (s[end] != '\0')
 	{
 		if (s[end] != c && start < 0)
 			start = end;
@@ -84,7 +92,7 @@ static char	**fill_array(const char *s, char **array, char c)
 			len = end - start;
 			if (s[end] != c)
 				len++;
-			array[index] = word_dup(s + start, len);
+			array[index] = ft_substr(s, start, len);
 			if (array[index] == NULL)
 				return (free_all(array));
 			index++;
