@@ -1,6 +1,30 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_split.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: asari <asari@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/26 17:27:23 by asari             #+#    #+#             */
+/*   Updated: 2025/06/26 17:53:18 by asari            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include <stdlib.h>
-#include "libft.h"
+
+static char	**free_all(char **array)
+{
+	int	i;
+
+	i = 0;
+	while (array[i])
+	{
+		free(array[i]);
+		i++;
+	}
+	free(array);
+	return (NULL);
+}
 
 static char	*word_dup(const char *start, int len)
 {
@@ -20,14 +44,13 @@ static char	*word_dup(const char *start, int len)
 	return (word);
 }
 
-
-static int	word_counter(char const *s, char c)
+static int	word_counter(const char *s, char c)
 {
 	int	word_count;
 	int	flag;
 
-	flag = 0;
 	word_count = 0;
+	flag = 0;
 	while (*s != '\0')
 	{
 		if (*s != c && flag == 0)
@@ -37,42 +60,53 @@ static int	word_counter(char const *s, char c)
 		}
 		else if (*s == c && flag == 1)
 			flag = 0;
-
 		s++;
 	}
 	return (word_count);
 }
 
-
-char	**ft_split(char const *s, char c)
+static char	**fill_array(const char *s, char **array, char c)
 {
-	char	**array;
-	int		word_count;
-	int		index;
-    int		start;
-    int		end;
+	int	start;
+	int	end;
+	int	index;
+	int	len;
 
-	index = 0;
-	word_count = word_counter(s, c);
-	array = malloc(sizeof(char*) * (word_count + 1));
-	if(array == NULL)
-		return (NULL);
 	start = -1;
 	end = 0;
-
+	index = 0;
 	while (s[end])
 	{
 		if (s[end] != c && start < 0)
 			start = end;
-        if ((s[end] == c || s[end + 1] == '\0') && start >= 0)
-        {
-            int len = end - start + (s[end] == c ? 0 : 1);
-            array[index] = word_dup(s + start, len);
+		if ((s[end] == c || s[end + 1] == '\0') && start >= 0)
+		{
+			len = end - start;
+			if (s[end] != c)
+				len++;
+			array[index] = word_dup(s + start, len);
+			if (array[index] == NULL)
+				return (free_all(array));
 			index++;
-            start = -1;
-        }
+			start = -1;
+		}
 		end++;
 	}
 	array[index] = NULL;
+	return (array);
+}
+
+char	**ft_split(const char *s, char c)
+{
+	char	**array;
+	int		word_count;
+
+	if (!s)
+		return (NULL);
+	word_count = word_counter(s, c);
+	array = malloc(sizeof(char *) * (word_count + 1));
+	if (array == NULL)
+		return (NULL);
+	array = fill_array(s, array, c);
 	return (array);
 }
