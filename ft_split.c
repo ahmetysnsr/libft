@@ -6,7 +6,7 @@
 /*   By: asari <asari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 17:27:23 by asari             #+#    #+#             */
-/*   Updated: 2025/06/26 18:08:34 by asari            ###   ########.fr       */
+/*   Updated: 2025/06/27 08:24:46 by asari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,26 +26,6 @@ static char	**free_all(char **array)
 	free(array);
 	return (NULL);
 }
-
-/*
-static char	*word_dup(const char *start, int len)
-{
-	char	*word;
-	int		i;
-
-	word = malloc(sizeof(char) * (len + 1));
-	if (word == NULL)
-		return (NULL);
-	i = 0;
-	while (i < len)
-	{
-		word[i] = start[i];
-		i++;
-	}
-	word[i] = '\0';
-	return (word);
-}
-*/
 
 void	initilazier(int *a, int *b, int *c)
 {
